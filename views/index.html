@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>HTMX Example</title>
+  <script src="https://unpkg.com/htmx.org"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .active {
+      font-weight: bold;
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="header" hx-get="/header" hx-trigger="load" class="w-full"></div>
+  <div class="flex">
+    <div id="sidebar" hx-get="/sidebar" hx-trigger="load" class="w-full md:w-1/4"></div>
+    <main id="main-content">
+      <div id="dashboard" {% if path %} hx-get="{{ path }}" {% else %} hx-get="/dashboard" {% endif %} hx-trigger="load"
+        class="w-full md:w-3/4"></div>
+    </main>
+  </div>
+  <script>
+    function setActiveLink() {
+      const sidebarLinks = document.querySelectorAll('#sidebar-links a');
+      const currentPath = window.location.pathname;
+      let activeSet = false;
+
+      sidebarLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+          link.classList.add('active');
+          activeSet = true;
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      // If no link matches the current path, set the first link as active
+      if (!activeSet && sidebarLinks.length > 0) {
+        sidebarLinks[0].classList.add('active');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', setActiveLink);
+    document.body.addEventListener('htmx:afterOnLoad', setActiveLink);
+  </script>
+</body>
+
+</html>
