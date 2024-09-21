@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body class="">
   <div id="header" hx-get="/header" hx-trigger="load" class="w-full"></div>
   <div class="flex">
     <div id="sidebar" hx-get="/sidebar" hx-trigger="load" class="w-full md:w-1/4"></div>
@@ -23,7 +23,7 @@
       let activeSet = false;
 
       sidebarLinks.forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
+        if (link.getAttribute('href') === currentPath + "#") {
           link.classList.add('text-blue-500');
           activeSet = true;
         } else {
